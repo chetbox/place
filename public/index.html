@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Place</title>
 
+    <link rel="icon" type="image/png" href="favicon.png" />
+
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/5.4.2/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
@@ -12,9 +14,20 @@
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17"></script>
 
-    <style>
+<style>
+      * {
+        font-family: 'Helvetica', sans-serif;
+        font-weight: 100;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
       #palette {
         border: 1px solid #ddd;
         display: table;
@@ -22,8 +35,8 @@
       }
       #palette .color {
         display: table-cell;
-        width: 20px;
-        height: 20px;
+        width: 8vmin;
+        height: 8vmin;
         cursor: pointer;
         transition: transform 200ms, box-shadow 200ms;
       }
@@ -36,8 +49,8 @@
         border-collapse: collapse;
       }
       #canvas td {
-        height: 6px;
-        width: 6px;
+        height: 0.9vmin;
+        width: 0.9vmin;
         border-color: transparent;
         cursor: pointer;
         transition: transform 200ms, box-shadow 200ms;
@@ -97,14 +110,18 @@
       .color.color-F {
         background-color: #820080;
       }
+      #about {
+        text-align: center;
+        font-size: 0.8em;
+      }
     </style>
   </head>
   <body>
 
     <div id="content">
-      <h1>Place</h1>
 
       <p>Pick a color</p>
+
       <div id="palette">
         <span
           v-for="color in palette"
@@ -124,7 +141,17 @@
             </tr>
         </tbody>
       </table>
+
     </div>
+
+    <p id="about">
+      Made with &#x2764; by <a href="https://chetbox.com">chetbox</a>
+      <br />
+      inspired by <a href="https://www.youtube.com/watch?v=_OTUGVAEWCA">this video</a> and <a href="http://reddit.com/place">Reddit Place</a>
+      <br />
+      <br />
+      <a href="https://github.com/chetbox/place">Fork me on GitHub</a>
+    </p>
 
     <script>
       const viewModel = new Vue({
