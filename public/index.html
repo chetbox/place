@@ -15,68 +15,143 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <style>
+      #palette {
+        border: 1px solid #ddd;
+        display: table;
+        border-collapse: separate;
+      }
+      #palette .color {
+        display: table-cell;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        transition: transform 200ms, box-shadow 200ms;
+      }
+      #palette .color.selected {
+        box-shadow: 0 0 6px #777;
+        transform: scale(1.25);
+      }
       #canvas {
         border: 1px solid #ddd;
-        border-collapse: separate;
-        border-width: 1px;
+        border-collapse: collapse;
       }
       #canvas td {
-        height: 4px;
-        width: 4px;
+        height: 6px;
+        width: 6px;
         border-color: transparent;
         cursor: pointer;
+        transition: transform 200ms, box-shadow 200ms;
       }
       #canvas td:hover {
-        transform: scale(1.5);
-        box-shadow: 0 0 4px #777;
+        transform: scale(2);
+        box-shadow: 0 0 6px #777;
       }
-      #canvas td.color-0 {
-        background-color: red;
+      .color {
+        background-color: white;
       }
-      #canvas td.color-1 {
-        background-color: green;
+      .color.color-0 {
+        background-color: #FFFFFF;
       }
-      #canvas td.color-2 {
-        background-color: blue;
+      .color.color-1 {
+        background-color: #E4E4E4;
+      }
+      .color.color-2 {
+        background-color: #888888;
+      }
+      .color.color-3 {
+        background-color: #222222;
+      }
+      .color.color-4 {
+        background-color: #FFA7D1;
+      }
+      .color.color-5 {
+        background-color: #E50000;
+      }
+      .color.color-6 {
+        background-color: #E59500;
+      }
+      .color.color-7 {
+        background-color: #A06A42;
+      }
+      .color.color-8 {
+        background-color: #E5D900;
+      }
+      .color.color-9 {
+        background-color: #94E044;
+      }
+      .color.color-A {
+        background-color: #02BE01;
+      }
+      .color.color-B {
+        background-color: #00D3DD;
+      }
+      .color.color-C {
+        background-color: #0083C7;
+      }
+      .color.color-D {
+        background-color: #0000EA;
+      }
+      .color.color-E {
+        background-color: #CF6EE4;
+      }
+      .color.color-F {
+        background-color: #820080;
       }
     </style>
   </head>
   <body>
 
-    <div id="header">
+    <div id="content">
       <h1>Place</h1>
-      <p>Click a pixel to change its color</p>
-    </div>
 
-    <table id="canvas">
-      <tbody>
-          <tr v-for="(row, rowIndex) in canvas">
-            <td
-              v-for="(cellColor, columnIndex) in row"
-              v-on:click="updateCell(rowIndex, columnIndex, '1')"
-              :class="'color-' + cellColor"></td>
-          </tr>
-      </tbody>
-    </table>
+      <p>Pick a color</p>
+      <div id="palette">
+        <span
+          v-for="color in palette"
+          @click="selected.color = color"
+          :class="[isSelected(color) && 'selected', 'color', 'color-' + color]"></span>
+      </div>
+
+      <p>Click a pixel to change its color</p>
+
+      <table id="canvas">
+        <tbody>
+            <tr v-for="(row, rowIndex) in canvas">
+              <td
+                v-for="(cellColor, columnIndex) in row"
+                @click="updateCell(rowIndex, columnIndex)"
+                :class="['color', 'color-' + cellColor]"></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
 
     <script>
       const viewModel = new Vue({
-        el: '#canvas',
+        el: '#content',
         data: {
           canvas: [],
+          palette: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
+          selected: {
+            color: '0',
+          }
         },
         methods: {
-          updateCell: function(rowIndex, columnIndex, newValue) {
+          updateCell: function(rowIndex, columnIndex) {
             const canvasRef = this.canvasRef;
+            const color = this.selected.color;
             return this.db.runTransaction(function(transaction) {
               return transaction.get(canvasRef).then(function(canvasDoc) {
                 const canvas = canvasDoc.data();
                 const row = canvas[rowIndex];
-                canvas[rowIndex] = row.substr(0, columnIndex) + newValue + row.substr(columnIndex + 1);
+                canvas[rowIndex] = row.substr(0, columnIndex) + color + row.substr(columnIndex + 1);
                 transaction.update(canvasRef, canvas);
               });
             });
           },
+          isSelected(color) {
+            return this.selected.color === color;
+          }
         }
       });
       viewModel.db = null;
