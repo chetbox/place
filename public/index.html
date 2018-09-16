@@ -17,18 +17,20 @@
     <style>
       #canvas {
         border: 1px solid #ddd;
-        border-collapse: separate;
+        border-collapse: collapse;
         border-width: 1px;
       }
       #canvas td {
-        height: 4px;
-        width: 4px;
+        height: 6px;
+        width: 6px;
         border-color: transparent;
         cursor: pointer;
+        transition: transform 200ms, box-shadow 200ms;
       }
       #canvas td:hover {
-        transform: scale(1.5);
-        box-shadow: 0 0 4px #777;
+        transform: scale(2);
+        box-shadow: 0 0 6px #777;
+        background-color: white;
       }
       #canvas td.color-0 {
         background-color: red;
