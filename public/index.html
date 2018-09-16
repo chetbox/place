@@ -10,7 +10,7 @@
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/5.4.2/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/5.4.2/firebase-firestore.js"></script>
+    <script defer src="/__/firebase/5.4.2/firebase-database.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
 
@@ -126,7 +126,7 @@
         <span
           v-for="color in palette"
           @click="selected.color = color"
-          :class="[isSelected(color) && 'selected', 'color', 'color-' + color]"></span>
+          :class="[isSelected(color) && 'selected', 'color', colorClass(color)]"></span>
       </div>
 
       <p>Click a pixel to change its color</p>
@@ -136,8 +136,8 @@
             <tr v-for="(row, rowIndex) in canvas">
               <td
                 v-for="(cellColor, columnIndex) in row"
-                @click="updateCell(rowIndex, columnIndex)"
-                :class="['color', 'color-' + cellColor]"></td>
+                @click="setPixelColor(rowIndex, columnIndex, selected.color)"
+                :class="['color', colorClass(cellColor)]"></td>
             </tr>
         </tbody>
       </table>
@@ -154,46 +154,83 @@
     </p>
 
     <script>
+      function flatten(nested, flattened, xOffsets, yOffsets) {
+        flattened = flattened || [];
+        xOffsets = xOffsets || '';
+        yOffsets = yOffsets || '';
+        Object.keys(nested || {}).forEach(function(key) {
+          const value = nested[key];
+          if (typeof(value) === 'object') {
+            flatten(value, flattened, xOffsets + key[0], yOffsets + key[1]);
+          } else {
+            // parse binary
+            const x = parseInt(xOffsets + key[0], 2);
+            const y = parseInt(yOffsets + key[1], 2);
+            flattened[x][y] = value;
+          }
+        });
+        return flattened;
+      }
+
+      function nestedDepth(nested) {
+        return typeof(nested) === 'object'
+          ? Object.values(nested).reduce(function(depth, child) { return 1 + Math.max(depth, nestedDepth(child)); }, 0)
+          : 0;
+      }
+
+      function emptyCanvas(depth) {
+        return [...Array(depth).keys()].map(() => Array(depth));
+      }
+
       const viewModel = new Vue({
         el: '#content',
         data: {
           canvas: [],
-          palette: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
+          canvasDepth: 4,
+          palette: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15],
           selected: {
-            color: '0',
+            color: 1,
           }
         },
         methods: {
-          updateCell: function(rowIndex, columnIndex) {
-            const canvasRef = this.canvasRef;
-            const color = this.selected.color;
-            return this.db.runTransaction(function(transaction) {
-              return transaction.get(canvasRef).then(function(canvasDoc) {
-                const canvas = canvasDoc.data();
-                const row = canvas[rowIndex];
-                canvas[rowIndex] = row.substr(0, columnIndex) + color + row.substr(columnIndex + 1);
-                transaction.update(canvasRef, canvas);
-              });
-            });
+          setPixelColor: function(row, column, color) {
+            const xOffsets = row.toString(2).padStart(this.canvasDepth, '0');
+            const yOffsets = column.toString(2).padStart(this.canvasDepth, '0');
+            let pixelRef = this.canvasRef;
+            for (let i=0; i<this.canvasDepth; i++) {
+              pixelRef = pixelRef.child(xOffsets[i] + yOffsets[i]);
+            }
+            pixelRef.set(color);
           },
           isSelected(color) {
             return this.selected.color === color;
-          }
+          },
+          colorClass(colorInt) {
+            return colorInt !== undefined && 'color-' + colorInt.toString(16).toUpperCase();
+          },
         }
       });
       viewModel.db = null;
       viewModel.canvasRef = null;
 
+      const canvasId = '3XfI6S6zb9IZJEHTegBE';
+
       document.addEventListener('DOMContentLoaded', function() {
-        const db = firebase.app().firestore();
-        db.settings({timestampsInSnapshots: true});
+        const db = firebase.app().database();
         viewModel.db = db;
 
-        const canvasRef = db.collection('canvas').doc('3XfI6S6zb9IZJEHTegBE');
-        viewModel.canvasRef = canvasRef;
+        const placeRef = db.ref('canvas').child(canvasId);
+        viewModel.canvasRef = placeRef.child('canvas');
 
-        canvasRef.onSnapshot(function(doc) {
-          Vue.set(viewModel, 'canvas', doc.data())
+        placeRef.on('value', function(snapshot) {
+          if (!snapshot.exists()) {
+            console.warning('Canvas does not exist', canvasId);
+            return;
+          }
+          const depth = snapshot.val().depth;
+          const canvas = flatten(snapshot.val().canvas, emptyCanvas(Math.pow(2, depth)));
+          Vue.set(viewModel, 'canvasDepth', depth);
+          Vue.set(viewModel, 'canvas', canvas);
         });
       });
     </script>
