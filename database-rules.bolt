@@ -1,0 +1,29 @@
+path /canvas/the-one-and-only {
+  read() { true }
+  write() { true }
+}
+
+path /canvas/{id} is Canvas;
+
+type Canvas {
+  depth: Integer;
+  content: Square<Square<Square<Square<Square<Square<Square<Color>>>>>>>
+
+  validate() { this.depth == 7 }
+}
+
+type Square<T> {
+  '00': T | Null;
+  '01': T | Null;
+  '10': T | Null;
+  '11': T | Null;
+}
+
+type Color extends Integer {
+  validate() { this >= 0 && this < 16 }
+}
+
+// From https://github.com/firebase/bolt/blob/87a57ac87486913c50f9484b388a54fcfa61204e/samples/regexp.bolt
+type Integer extends Number {
+  validate() { (this + '').test(/^-?\d+$/) }
+}

@@ -1,13 +1,9 @@
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    match /canvas/{id} {
-      allow read;
-      allow write:
-        if request.resource.data.keys() == resource.data.keys()
-          && request.resource.data.values().join('').size() == resource.data.values().join('').size()
-          && request.resource.data.values().join('').matches('[0-9A-F]*')
-      ;
+    match /{any} {
+      allow read, write, list: if false;
     }
+
   }
 }

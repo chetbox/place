@@ -9,9 +9,11 @@ before_install:
   - yarn global add firebase-tools
 
 install:
+  - yarn
   - (cd functions && yarn)
 
 script:
+  - yarn build
   - (cd functions && yarn lint)
 
 deploy:

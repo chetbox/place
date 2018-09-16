@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "firebase-bolt": "^0.8.4"
+  },
+  "scripts": {
+    "build": "firebase-bolt < database-rules.bolt > .database-rules.json"
+  }
+}
