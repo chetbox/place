@@ -1,5 +1,5 @@
 .DS_Store
 .firebase/
 *.log
-database-rules.json
+.database-rules.json
 node_modules/
