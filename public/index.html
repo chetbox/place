@@ -27,6 +27,15 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        max-width: 100%;
+        margin: 0;
+      }
+      #content {
+        max-width: 100%;
+      }
+      #content > * {
+        margin-left: 32px;
+        margin-right: 32px;
       }
       #palette {
         border: 1px solid #ddd;
@@ -44,19 +53,29 @@
         box-shadow: 0 0 6px #777;
         transform: scale(1.25);
       }
+      #canvas-container {
+        max-width: 100%;
+        overflow: auto;
+        margin-left: 0;
+        margin-right: 0;
+      }
       #canvas {
         border: 1px solid #ddd;
         border-collapse: collapse;
+        overflow: auto;
+        table-layout: fixed;
+        width: max-content;
+        margin: 0 32px;
       }
       #canvas td {
-        height: 0.9vmin;
-        width: 0.9vmin;
+        height: 10px;
+        width: 10px;
         border-color: transparent;
         cursor: pointer;
         transition: transform 200ms, box-shadow 200ms;
       }
       #canvas td:hover {
-        transform: scale(2);
+        transform: scale(1.5);
         box-shadow: 0 0 6px #777;
       }
       .color {
@@ -131,16 +150,18 @@
 
       <p>Click a pixel to change its color</p>
 
-      <table id="canvas">
-        <tbody>
-            <tr v-for="(row, rowIndex) in canvas">
-              <td
-                v-for="(cellColor, columnIndex) in row"
-                @click="setPixelColor(rowIndex, columnIndex, selected.color)"
-                :class="['color', colorClass(cellColor)]"></td>
-            </tr>
-        </tbody>
-      </table>
+      <div id="canvas-container">
+        <table id="canvas">
+          <tbody>
+              <tr v-for="(row, rowIndex) in canvas">
+                <td
+                  v-for="(cellColor, columnIndex) in row"
+                  @click="setPixelColor(rowIndex, columnIndex, selected.color)"
+                  :class="['color', colorClass(cellColor)]"></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
 
     </div>
 
