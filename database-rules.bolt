@@ -1,13 +1,14 @@
-path /canvas/the-one-and-only {
+path /canvas/the-one-and-only is Canvas {
   read() { true }
+}
+
+path /canvas/the-one-and-only/canvas {
   write() { true }
 }
 
-path /canvas/{id} is Canvas;
-
 type Canvas {
   depth: Integer;
-  content: Square<Square<Square<Square<Square<Square<Square<Color>>>>>>>
+  canvas: Square<Square<Square<Square<Square<Square<Square<Color>>>>>>>
 
   validate() { this.depth == 7 }
 }

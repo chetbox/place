@@ -1,4 +1,5 @@
 {
+  "license": "MIT",
   "devDependencies": {
     "firebase-bolt": "^0.8.4"
   },
