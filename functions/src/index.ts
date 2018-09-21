@@ -44,9 +44,6 @@ export const imagePng = functions.https.onRequest((request, response) => {
     }
     return image.pack();
   })
-  .then((image) => {
-    response.set('Cache-Control', 'public, max-age=86400'); // one day
-    image.pipe(response);
-  })
+  .then((image) => image.pipe(response))
   .catch((error) => response.status(500).send(error));
 });
