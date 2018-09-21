@@ -1,8 +1,52 @@
 import * as functions from 'firebase-functions';
+import { PNG } from 'pngjs';
+import { Canvas, Square } from './database-types';
+import { Color as PaletteColor, Palette } from './palette';
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+import * as admin from 'firebase-admin';
+admin.initializeApp();
+
+const IMAGE_ID = 'the-one-and-only';
+const database = admin.database();
+
+function zeroPad(n: number|string, padding: number): string {
+  return ('0'.repeat(padding) + n).slice(-padding);
+}
+
+function colorIndexFrom(canvas: Canvas, x: number, y: number): number {
+  const xPath = zeroPad(x.toString(2), canvas.depth);
+  const yPath = zeroPad(y.toString(2), canvas.depth);
+  let square: Square<any>|number = canvas.canvas;
+  for (let i=0; i<canvas.depth; i++) {
+    square = square[xPath[i] + yPath[i]];
+  }
+  return square as number;
+}
+
+function setColor(png: PNG, x: number, y: number, color: PaletteColor) {
+  const index = (y + x * png.width) * 4;
+  png.data[index] = color.r;
+  png.data[index + 1] = color.g;
+  png.data[index + 2] = color.b;
+  png.data[index + 3] = color.a;
+}
+
+export const imagePng = functions.https.onRequest((request, response) => {
+  database.ref('canvas').child(IMAGE_ID).once('value')
+  .then((snapshot) => {
+    const canvas = snapshot.val() as Canvas;
+    const size = Math.pow(2, canvas.depth);
+    const image = new PNG({width: size, height: size});
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        setColor(image, x, y, Palette[colorIndexFrom(canvas, x, y)])
+      }
+    }
+    return image.pack();
+  })
+  .then((image) => {
+    response.set('Cache-Control', 'public, max-age=86400'); // one day
+    image.pipe(response);
+  })
+  .catch((error) => response.status(500).send(error));
+});

@@ -18,8 +18,12 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "/",
         "destination": "/index.html"
+      },
+      {
+        "source": "/image.png",
+        "function": "imagePng"
       }
     ]
   },

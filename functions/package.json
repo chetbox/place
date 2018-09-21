@@ -1,5 +1,6 @@
 {
   "name": "functions",
+  "license": "MIT",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
@@ -12,11 +13,13 @@
   "main": "lib/index.js",
   "dependencies": {
     "firebase-admin": "~6.0.0",
-    "firebase-functions": "^2.0.3"
+    "firebase-functions": "^2.0.3",
+    "pngjs": "^3.3.3"
   },
   "devDependencies": {
+    "@firebase/app-types": "^0.3.2",
+    "@types/pngjs": "^3.3.2",
     "tslint": "~5.8.0",
     "typescript": "~2.8.3"
-  },
-  "private": true
+  }
 }
