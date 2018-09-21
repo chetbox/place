@@ -25,6 +25,17 @@
         "source": "/image.png",
         "function": "imagePng"
       }
+    ],
+    "headers": [
+      {
+        "source": "/image.png",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=14400"
+          }
+        ]
+      }
     ]
   },
   "storage": {
