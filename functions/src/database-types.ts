@@ -4,10 +4,10 @@ export interface Canvas {
 }
 
 export interface Square<T> {
-  '00': T | null;
-  '01': T | null;
-  '10': T | null;
-  '11': T | null;
+  '00'?: T;
+  '01'?: T;
+  '10'?: T;
+  '11'?: T;
 }
 
 export type Color = number;
