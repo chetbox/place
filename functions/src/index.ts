@@ -13,12 +13,12 @@ function zeroPad(n: number|string, padding: number): string {
   return ('0'.repeat(padding) + n).slice(-padding);
 }
 
-function colorIndexFrom(canvas: Canvas, x: number, y: number): number {
+function colorIndexFrom(canvas: Canvas, x: number, y: number): number|undefined {
   const xPath = zeroPad(x.toString(2), canvas.depth);
   const yPath = zeroPad(y.toString(2), canvas.depth);
-  let square: Square<any>|number = canvas.canvas;
+  let square: Square<any>|number|undefined = canvas.canvas;
   for (let i=0; i<canvas.depth; i++) {
-    square = square[xPath[i] + yPath[i]];
+    square = square !== undefined && square[xPath[i] + yPath[i]] || undefined;
   }
   return square as number;
 }
@@ -39,7 +39,10 @@ export const imagePng = functions.https.onRequest((request, response) =>
     const image = new PNG({width: size, height: size});
     for (let y = 0; y < size; y++) {
       for (let x = 0; x < size; x++) {
-        setColor(image, x, y, Palette[colorIndexFrom(canvas, x, y)])
+        const colorIndex = colorIndexFrom(canvas, x, y);
+        if (colorIndex !== undefined) {
+          setColor(image, x, y, Palette[colorIndex]);
+        }
       }
     }
     return image.pack();
