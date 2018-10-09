@@ -12,7 +12,20 @@ Make a pull request.
 
 ## Local development
 
-Install `firebase-tools` and run `firebase serve`.
+Build the source.
+
+```shell
+yarn --cwd functions build
+yarn --cwd hosting build
+```
+
+Install `firebase-tools`:
+
+```shell
+yarn global add firebase-tools
+```
+
+Run `firebase serve -p 8000` then navigate to [http://localhost:8000](https://localhost:8000).
 
 ## Deployment
 

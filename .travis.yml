@@ -5,16 +5,15 @@ node_js:
 cache:
   yarn: true
 
-before_install:
-  - yarn global add firebase-tools
-
 install:
-  - yarn
-  - (cd functions && yarn)
+  - yarn --cwd database
+  - yarn --cwd functions
+  - yarn --cwd hosting
 
 script:
-  - yarn build
-  - (cd functions && yarn lint)
+  - yarn --cwd database build
+  - yarn --cwd functions lint
+  - yarn --cwd hosting build
 
 deploy:
   provider: firebase

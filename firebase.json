@@ -1,8 +1,4 @@
 {
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
   "functions": {
     "predeploy": [
       "yarn --cwd \"$RESOURCE_DIR\" lint",
@@ -10,7 +6,10 @@
     ]
   },
   "hosting": {
-    "public": "public",
+    "predeploy": [
+      "yarn --cwd hosting build"
+    ],
+    "public": "hosting/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -39,12 +38,12 @@
     ]
   },
   "storage": {
-    "rules": "storage.rules"
+    "rules": "storage/storage.rules"
   },
   "database": {
-    "rules": ".database-rules.json",
+    "rules": "database/.rules.json",
     "predeploy": [
-      "yarn build"
+      "yarn --cwd database build"
     ]
   }
 }

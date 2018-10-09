@@ -4,6 +4,6 @@
     "firebase-bolt": "^0.8.4"
   },
   "scripts": {
-    "build": "firebase-bolt < database-rules.bolt > .database-rules.json"
+    "build": "firebase-bolt < rules.bolt > .rules.json"
   }
 }
