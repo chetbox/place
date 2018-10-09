@@ -13,6 +13,8 @@ install:
 script:
   - yarn --cwd database build
   - yarn --cwd functions lint
+  - yarn --cwd functions build
+  - yarn --cwd hosting lint
   - yarn --cwd hosting build
 
 deploy:
