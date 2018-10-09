@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import { PNG } from 'pngjs';
-import { Canvas, Square } from './database-types';
+import { Canvas, Square } from '../../database/.types';
 import { Color as PaletteColor, Palette } from './palette';
 
 import * as admin from 'firebase-admin';

@@ -1,9 +1,12 @@
 {
   "license": "MIT",
   "devDependencies": {
-    "firebase-bolt": "^0.8.4"
+    "firebase-bolt": "^0.8.4",
+    "firebase-bolt-transpiler": "https://github.com/erickrawczyk/firebase-bolt-transpiler"
   },
   "scripts": {
-    "build": "firebase-bolt < rules.bolt > .rules.json"
+    "build-json": "firebase-bolt < rules.bolt > .rules.json",
+    "build-typescript": "firebase-bolt-transpiler < rules.bolt > .types.ts && node fix-types.js .types.ts",
+    "build": "yarn run build-json && yarn run build-typescript"
   }
 }

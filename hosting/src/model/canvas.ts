@@ -1,11 +1,6 @@
+import { Square } from '../../../database/.types';
 
-// todo: move to shared database-model.ts
-interface Square<T> {
-  '00'?: T;
-  '01'?: T;
-  '10'?: T;
-  '11'?: T;
-}
+export type Square<T> = Square<T>;
 
 const SQUARE_KEYS: Array<keyof Square<any>> = ['00', '01', '10', '11'];
 

@@ -1,12 +1,15 @@
 {
   "functions": {
     "predeploy": [
+      "yarn --cwd database build-typescript",
       "yarn --cwd \"$RESOURCE_DIR\" lint",
       "yarn --cwd \"$RESOURCE_DIR\" build"
     ]
   },
   "hosting": {
     "predeploy": [
+      "yarn --cwd database build-typescript",
+      "yarn --cwd hosting lint",
       "yarn --cwd hosting build"
     ],
     "public": "hosting/dist",
@@ -43,7 +46,7 @@
   "database": {
     "rules": "database/.rules.json",
     "predeploy": [
-      "yarn --cwd database build"
+      "yarn --cwd database build-json"
     ]
   }
 }

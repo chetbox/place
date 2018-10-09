@@ -24,7 +24,15 @@ es6-promise@^3.2.1:
   version "3.3.1"
   resolved "http://registry.npmjs.org/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
 
-firebase-bolt@^0.8.4:
+"firebase-bolt-transpiler@https://github.com/erickrawczyk/firebase-bolt-transpiler":
+  version "0.1.1"
+  resolved "https://github.com/erickrawczyk/firebase-bolt-transpiler#8cbf4a992737f96f4eb64f44e80475953ed8b827"
+  dependencies:
+    firebase-bolt "^0.8.0"
+    lodash "^4.13.1"
+    minimist "^1.2.0"
+
+firebase-bolt@^0.8.0, firebase-bolt@^0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/firebase-bolt/-/firebase-bolt-0.8.4.tgz#7690ee8ee6d3a750a41201df35ee32936f82d22c"
   dependencies:
@@ -37,6 +45,10 @@ firebase-bolt@^0.8.4:
 firebase-token-generator@^2.0.0:
   version "2.0.0"
   resolved "http://registry.npmjs.org/firebase-token-generator/-/firebase-token-generator-2.0.0.tgz#9767d759ec13abdc99ba115fd5ea99d8b93d1206"
+
+lodash@^4.13.1:
+  version "4.17.11"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
 minimist@^1.2.0:
   version "1.2.0"
