@@ -20,7 +20,7 @@
     "@firebase/app-types": "^0.3.2",
     "@types/pngjs": "^3.3.2",
     "tslint": "~5.8.0",
-    "typescript": "~2.8.3"
+    "typescript": "^3.6.2"
   },
   "engines": {
     "node": "8"
