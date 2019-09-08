@@ -14,7 +14,7 @@ export function toGrid<T>(
     const value = canvas[key];
     if (typeof value === 'object') {
       toGrid(value, flattened, xOffsets + key[0], yOffsets + key[1]);
-    } else {
+    } else if (value !== undefined) {
       // parse binary
       const x = parseInt(xOffsets + key[0], 2);
       const y = parseInt(yOffsets + key[1], 2);
