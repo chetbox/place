@@ -1,7 +1,5 @@
 import { Square } from '../../../database/.types';
 
-export type Square<T> = Square<T>;
-
 const SQUARE_KEYS: Array<keyof Square<any>> = ['00', '01', '10', '11'];
 
 export function toGrid<T>(
