@@ -2,3 +2,4 @@
 .firebase/
 *.log
 node_modules/
+yarn.lock

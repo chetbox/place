@@ -21,7 +21,7 @@
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import { Color, colorClass } from '../model/colors';
 import { toGrid, emptyGrid } from '../model/canvas';
-import database from '../database';
+import database, { DataSnapshot } from '../database';
 
 @Component
 export default class Canvas extends Vue {
@@ -47,7 +47,7 @@ export default class Canvas extends Vue {
     this.placeRef.off('value', this.onCanvasUpdated);
   }
 
-  private onCanvasUpdated(snapshot: firebase.database.DataSnapshot|null) {
+  private onCanvasUpdated(snapshot: DataSnapshot|null) {
     if (!snapshot || !snapshot.exists()) {
       console.warn('Canvas does not exist', this.canvasId);
       return;

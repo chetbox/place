@@ -15,9 +15,8 @@ Make a pull request.
 Build the source.
 
 ```shell
-yarn --cwd database build
-yarn --cwd functions build
-yarn --cwd hosting build
+yarn
+yarn build
 ```
 
 Install `firebase-tools`:

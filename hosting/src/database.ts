@@ -13,3 +13,6 @@ firebase.initializeApp({
 const database = firebase.app().database();
 
 export default database;
+
+export type Database = firebase.database.Database;
+export type DataSnapshot = firebase.database.DataSnapshot;

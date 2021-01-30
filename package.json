@@ -1,0 +1,12 @@
+{
+  "name": "place",
+  "version": "1.0.0",
+  "repository": "git@github.com:chetbox/place.git",
+  "author": "Chetan Padia <chetbox@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "install": "yarn --cwd database && yarn --cwd functions && yarn --cwd hosting",
+    "build": "yarn --cwd database build && yarn --cwd functions build && yarn --cwd hosting build",
+    "lint": "yarn --cwd functions lint && yarn --cwd hosting lint"
+  }
+}
