@@ -6,16 +6,11 @@ cache:
   yarn: true
 
 install:
-  - yarn --cwd database
-  - yarn --cwd functions
-  - yarn --cwd hosting
+  - yarn
 
 script:
-  - yarn --cwd database build
-  - yarn --cwd functions lint
-  - yarn --cwd functions build
-  - yarn --cwd hosting lint
-  - yarn --cwd hosting build
+  - yarn build
+  - yarn lint
 
 deploy:
   provider: firebase
