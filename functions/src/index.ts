@@ -49,7 +49,7 @@ export const imagePng = functions.https.onRequest(async (request, response) => {
         }
       }
     }
-    response.status(200).send(image.pack());
+    image.pack().pipe(response)
   } catch (error) {
     response.status(500).send(error);
   }
