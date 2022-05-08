@@ -27,4 +27,4 @@ Run `firebase serve -p 8000` then navigate to [http://localhost:8000](https://lo
 
 ## Deployment
 
-All merges to `master` are deployed automatically to [place.chetbox.com](https://place.chetbox.com) from Travis CI using Firebase CLI tools.
+All merges to `main` are deployed automatically to [place.chetbox.com](https://place.chetbox.com) from Travis CI using Firebase CLI tools.
