@@ -31,7 +31,7 @@ function setColor(png: PNG, x: number, y: number, color: PaletteColor) {
   png.data[index + 3] = color.a;
 }
 
-export const imagePng = functions.https.onRequest((request, response) =>
+export const imagePng = functions.https.onRequest((request, response) => {
   database.ref('canvas').child(IMAGE_ID).once('value')
   .then((snapshot) => {
     const canvas = snapshot.val() as Canvas;
@@ -49,4 +49,4 @@ export const imagePng = functions.https.onRequest((request, response) =>
   })
   .then((image) => image.pipe(response))
   .catch((error) => response.status(500).send(error))
-);
+});
