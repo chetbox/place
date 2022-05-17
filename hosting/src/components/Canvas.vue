@@ -22,6 +22,7 @@ import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import { Color, colorClass } from '../model/colors';
 import { toGrid, emptyGrid } from '../model/canvas';
 import database from '../database';
+import { DataSnapshot } from '@firebase/database-types';
 
 @Component
 export default class Canvas extends Vue {
@@ -29,12 +30,12 @@ export default class Canvas extends Vue {
   @Prop()
   public penColor: Color = 0;
 
-  private data = {
+  data = {
     canvasDepth: 1,
     canvas: [] as Array<Array<number|undefined>>,
   };
 
-  private colorClass = colorClass;
+  colorClass = colorClass;
 
   private canvasId = 'the-one-and-only';
   private placeRef = database.ref('canvas').child(this.canvasId);
@@ -47,7 +48,7 @@ export default class Canvas extends Vue {
     this.placeRef.off('value', this.onCanvasUpdated);
   }
 
-  private onCanvasUpdated(snapshot: firebase.database.DataSnapshot|null) {
+  private onCanvasUpdated(snapshot: DataSnapshot|null) {
     if (!snapshot || !snapshot.exists()) {
       console.warn('Canvas does not exist', this.canvasId);
       return;
@@ -57,7 +58,7 @@ export default class Canvas extends Vue {
     this.data.canvas = toGrid<number>(snapshot.val().canvas, emptyGrid(Math.pow(2, this.data.canvasDepth)));
   }
 
-  private setPixelColor(row: number, column: number, color: Color) {
+  setPixelColor(row: number, column: number, color: Color) {
     const xOffsets = row.toString(2).padStart(this.data.canvasDepth, '0');
     const yOffsets = column.toString(2).padStart(this.data.canvasDepth, '0');
     let pixelRef = this.placeRef.child('canvas');
