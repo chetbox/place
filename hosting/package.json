@@ -1,5 +1,5 @@
 {
-  "name": "place",
+  "name": "hosting",
   "version": "0.2.0",
   "license": "MIT",
   "scripts": {
@@ -17,7 +17,7 @@
     "@vue/cli-plugin-babel": "^3.0.4",
     "@vue/cli-plugin-typescript": "^3.0.4",
     "@vue/cli-service": "^3.0.4",
-    "typescript": "^3.0.0",
+    "typescript": "4",
     "vue-template-compiler": "^2.5.17"
   }
 }

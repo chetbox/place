@@ -9,9 +9,9 @@ export function toGrid<T>(
   yOffsets = '',
 ) {
   SQUARE_KEYS.forEach((key) => {
-    const value = canvas[key];
+    const value = canvas[key] as Square<Square<any>> | Square<T> | undefined;
     if (typeof value === 'object') {
-      toGrid(value, flattened, xOffsets + key[0], yOffsets + key[1]);
+      toGrid<T>(value, flattened, xOffsets + key[0], yOffsets + key[1]);
     } else if (value !== undefined) {
       // parse binary
       const x = parseInt(xOffsets + key[0], 2);

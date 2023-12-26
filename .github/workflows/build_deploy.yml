@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: 16.x
       - run: yarn
-      - run: yarn build
+      - run: yarn workspaces run build
   deploy-main:
     concurrency: deploy-main
     if: github.ref == 'refs/heads/main'
@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 16.x
       - run: yarn
-      - run: yarn build
+      - run: yarn workspaces run build
       - name: firebase deploy
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

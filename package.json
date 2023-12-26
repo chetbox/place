@@ -3,8 +3,6 @@
   "repository": "git@github.com:chetbox/place.git",
   "author": "Chetan Padia <chetbox@users.noreply.github.com>",
   "license": "MIT",
-  "scripts": {
-  	"postinstall": "yarn --cwd database && yarn --cwd functions && yarn --cwd hosting",
-  	"build": "yarn --cwd database build && yarn --cwd functions build && yarn --cwd hosting build"
-  }
+  "private": true,
+  "workspaces": ["database", "functions", "hosting"]
 }
