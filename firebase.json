@@ -1,17 +1,6 @@
 {
-  "functions": {
-    "predeploy": [
-      "yarn --cwd database build-typescript",
-      "yarn --cwd \"$RESOURCE_DIR\" lint",
-      "yarn --cwd \"$RESOURCE_DIR\" build"
-    ]
-  },
+  "functions": {},
   "hosting": {
-    "predeploy": [
-      "yarn --cwd database build-typescript",
-      "yarn --cwd hosting lint",
-      "yarn --cwd hosting build"
-    ],
     "public": "hosting/dist",
     "ignore": [
       "firebase.json",
@@ -44,9 +33,6 @@
     "rules": "storage/storage.rules"
   },
   "database": {
-    "rules": "database/.rules.json",
-    "predeploy": [
-      "yarn --cwd database build-json"
-    ]
+    "rules": "database/.rules.json"
   }
 }

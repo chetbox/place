@@ -14,7 +14,7 @@ Build the source.
 
 ```shell
 yarn
-yarn build
+yarn workspaces run build
 ```
 
 Install `firebase-tools`:
