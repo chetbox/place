@@ -36,8 +36,15 @@ export default class Canvas extends Vue {
 
   public colorClass = colorClass;
 
-  private canvasId = 'the-one-and-only';
-  private placeRef = database.ref('canvas').child(this.canvasId);
+  public setPixelColor(row: number, column: number, color: Color) {
+    const xOffsets = row.toString(2).padStart(this.data.canvasDepth, '0');
+    const yOffsets = column.toString(2).padStart(this.data.canvasDepth, '0');
+    let pixelRef = this.placeRef.child('canvas');
+    for (let i = 0; i < this.data.canvasDepth; i++) {
+      pixelRef = pixelRef.child(xOffsets[i] + yOffsets[i]);
+    }
+    pixelRef.set(color);
+  }
 
   protected mounted() {
     this.placeRef.on('value', this.onCanvasUpdated);
@@ -57,16 +64,8 @@ export default class Canvas extends Vue {
     this.data.canvas = toGrid<number>(snapshot.val().canvas, emptyGrid(Math.pow(2, this.data.canvasDepth)));
   }
 
-  public setPixelColor(row: number, column: number, color: Color) {
-    const xOffsets = row.toString(2).padStart(this.data.canvasDepth, '0');
-    const yOffsets = column.toString(2).padStart(this.data.canvasDepth, '0');
-    let pixelRef = this.placeRef.child('canvas');
-    for (let i = 0; i < this.data.canvasDepth; i++) {
-      pixelRef = pixelRef.child(xOffsets[i] + yOffsets[i]);
-    }
-    pixelRef.set(color);
-  }
-
+  private canvasId = 'the-one-and-only';
+  private placeRef = database.ref('canvas').child(this.canvasId);
 }
 </script>
 
