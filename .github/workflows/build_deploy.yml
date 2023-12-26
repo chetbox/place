@@ -33,5 +33,5 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
-          yarn global add firebase-tools
+          yarn global add firebase-tools@12
           firebase deploy --token "$FIREBASE_TOKEN" --force
