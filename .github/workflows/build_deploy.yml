@@ -12,6 +12,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
+      - run: npm install -g yarn@1.22
       - run: yarn
       - run: yarn workspaces run build
   deploy-main:
@@ -27,6 +28,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
+      - run: npm install -g yarn@1.22
       - run: yarn
       - run: yarn workspaces run build
       - name: firebase deploy
