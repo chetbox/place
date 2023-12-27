@@ -58,11 +58,14 @@ export default class Canvas extends Vue {
   }
 
   protected mounted() {
-    this.placeRef.on('value', this.onCanvasUpdated);
+    this.placeRef.child('depth').once('value', (snapshot: firebase.database.DataSnapshot) => {
+      this.data.canvasDepth = snapshot.val();
+      this.placeRef.child('canvas').on('value', this.onCanvasUpdated);
+    });
   }
 
   protected destroyed() {
-    this.placeRef.off('value', this.onCanvasUpdated);
+    this.placeRef.child('canvas').off('value', this.onCanvasUpdated);
   }
 
   private onCanvasUpdated(snapshot: firebase.database.DataSnapshot) {
@@ -71,8 +74,7 @@ export default class Canvas extends Vue {
       return;
     }
 
-    this.data.canvasDepth = snapshot.val().depth;
-    this.data.canvas = toGrid<number>(snapshot.val().canvas, emptyGrid(Math.pow(2, this.data.canvasDepth)));
+    this.data.canvas = toGrid<number>(snapshot.val(), emptyGrid(Math.pow(2, this.data.canvasDepth)));
   }
 
   private canvasId = 'the-one-and-only';
