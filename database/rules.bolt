@@ -6,7 +6,7 @@ path /canvas/the-one-and-only/canvas {
   write() { true }
 }
 
-path /canvas/the-one-and-only/history/{id} {
+path /canvas/the-one-and-only/history/{key1} {
   write() { createOnly(this) }
 }
 
