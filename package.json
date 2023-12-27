@@ -4,5 +4,9 @@
   "author": "Chetan Padia <chetbox@users.noreply.github.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": ["database", "functions", "hosting"]
+  "workspaces": ["database", "functions", "hosting"],
+  "main": "./functions/dist/functions/src/index.js",
+  "engines": {
+    "node": "16"
+  }
 }
