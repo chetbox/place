@@ -8,7 +8,8 @@ path /canvas/the-one-and-only/canvas {
 
 type Canvas {
   depth: Integer;
-  canvas: Square<Square<Square<Square<Square<Square<Square<Color>>>>>>>
+  canvas: Square<Square<Square<Square<Square<Square<Square<Color>>>>>>>;
+  history: ColorHistoryItem[];
 
   validate() { this.depth == 7 }
 }
@@ -27,4 +28,17 @@ type Color extends Integer {
 // From https://github.com/firebase/bolt/blob/87a57ac87486913c50f9484b388a54fcfa61204e/samples/regexp.bolt
 type Integer extends Number {
   validate() { (this + '').test(/^-?\d+$/) }
+}
+
+type HistoryItem<T> {
+  value: T;
+  x: Integer;
+  y: Integer;
+  timestamp: CurrentTimestamp;
+}
+
+type ColorHistoryItem extends HistoryItem<Color> {}
+
+type CurrentTimestamp extends Number {
+  validate() { this == now }
 }
