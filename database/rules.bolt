@@ -6,6 +6,10 @@ path /canvas/the-one-and-only/canvas {
   write() { true }
 }
 
+path /canvas/the-one-and-only/history/{id} {
+  write() { createOnly(this) }
+}
+
 type Canvas {
   depth: Integer;
   canvas: Square<Square<Square<Square<Square<Square<Square<Color>>>>>>>;
@@ -41,4 +45,10 @@ type ColorHistoryItem extends HistoryItem<Color> {}
 
 type CurrentTimestamp extends Number {
   validate() { this == now }
+}
+
+// Helper functions
+
+createOnly(value) {
+  prior(value) == null && value != null
 }
