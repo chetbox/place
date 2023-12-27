@@ -22,6 +22,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Color, colorClass } from '../model/colors';
 import { toGrid, emptyGrid } from '../model/canvas';
 import database from '../database';
+import firebase from 'firebase/app';
 
 @Component
 export default class Canvas extends Vue {
@@ -39,11 +40,22 @@ export default class Canvas extends Vue {
   public setPixelColor(row: number, column: number, color: Color) {
     const xOffsets = row.toString(2).padStart(this.data.canvasDepth, '0');
     const yOffsets = column.toString(2).padStart(this.data.canvasDepth, '0');
-    let pixelRef = this.placeRef.child('canvas');
+    const canvasRef = this.placeRef.child('canvas');
+    let pixelRef = canvasRef;
     for (let i = 0; i < this.data.canvasDepth; i++) {
       pixelRef = pixelRef.child(xOffsets[i] + yOffsets[i]);
     }
     pixelRef.set(color);
+
+    // Save history
+    const historyRef = canvasRef.child('history');
+    const historyItemRef = historyRef.push();
+    historyItemRef.set({
+      x: row,
+      y: column,
+      value: color,
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+    });
   }
 
   protected mounted() {
@@ -54,7 +66,7 @@ export default class Canvas extends Vue {
     this.placeRef.off('value', this.onCanvasUpdated);
   }
 
-  private onCanvasUpdated(snapshot: firebase.default.database.DataSnapshot) {
+  private onCanvasUpdated(snapshot: firebase.database.DataSnapshot) {
     if (!snapshot.exists()) {
       console.warn('Canvas does not exist', this.canvasId);
       return;
