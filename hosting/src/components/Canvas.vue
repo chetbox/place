@@ -40,19 +40,18 @@ export default class Canvas extends Vue {
   public setPixelColor(row: number, column: number, color: Color) {
     const xOffsets = row.toString(2).padStart(this.data.canvasDepth, '0');
     const yOffsets = column.toString(2).padStart(this.data.canvasDepth, '0');
-    const canvasRef = this.placeRef.child('canvas');
-    let pixelRef = canvasRef;
+    let pixelRef = this.placeRef.child('canvas');
     for (let i = 0; i < this.data.canvasDepth; i++) {
       pixelRef = pixelRef.child(xOffsets[i] + yOffsets[i]);
     }
     pixelRef.set(color);
 
     // Save history
-    const historyRef = canvasRef.child('history');
+    const historyRef =  this.placeRef.child('history');
     const historyItemRef = historyRef.push();
     historyItemRef.set({
-      x: row,
-      y: column,
+      x: column,
+      y: row,
       value: color,
       timestamp: firebase.database.ServerValue.TIMESTAMP,
     });
