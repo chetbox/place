@@ -47,6 +47,6 @@ export const imagePng = functions.https.onRequest((request, response) => {
     }
     return image.pack();
   })
-  .then((image) => image.pipe(response))
+  .then((image) => image.pipe(response).type('image/png'))
   .catch((error) => response.status(500).send(error))
 });
