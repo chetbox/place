@@ -15,6 +15,8 @@ jobs:
       - run: npm install -g yarn@1.22
       - run: yarn
       - run: yarn workspaces run build
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
   deploy-main:
     concurrency: deploy-main
     if: github.ref == 'refs/heads/main'
@@ -31,6 +33,8 @@ jobs:
       - run: npm install -g yarn@1.22
       - run: yarn
       - run: yarn workspaces run build
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
       - name: firebase deploy
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
