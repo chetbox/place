@@ -7,6 +7,6 @@
   "workspaces": ["database", "functions", "hosting"],
   "main": "./functions/dist/functions/src/index.js",
   "engines": {
-    "node": "16"
+    "node": "18"
   }
 }
