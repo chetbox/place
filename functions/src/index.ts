@@ -84,7 +84,7 @@ export const historyGif = functions
         maxFrameDelay: 500,
         scale: 1,
       });
-      response.type("image/gif").end(imageData, "binary");
+      response.type("image/gif").end(Buffer.from(imageData), "binary");
     } catch (error) {
       response.status(500).send(error);
     }
