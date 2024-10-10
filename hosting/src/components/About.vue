@@ -2,6 +2,8 @@
       <p id="about">
       Made with &#x2764; by <a href="https://chetbox.com">chetbox</a>
       <br />
+      Disclaimer: I am not responsible for any of the anonymous creations above.
+      <br />
       inspired by <a href="https://www.youtube.com/watch?v=_OTUGVAEWCA">this video</a> and <a href="http://reddit.com/r/place">Reddit Place</a>
       <br />
       <br />
