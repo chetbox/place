@@ -13,8 +13,10 @@
   },
   "main": "dist/functions/src/index.js",
   "dependencies": {
+    "canvas": "^2.11.2",
     "firebase-admin": "^8.13.0",
     "firebase-functions": "^3.21.0",
+    "modern-gif": "^2.0.3",
     "pngjs": "^3.3.3"
   },
   "devDependencies": {

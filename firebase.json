@@ -25,6 +25,10 @@
       {
         "source": "/image.png",
         "function": "imagePng"
+      },
+      {
+        "source": "/history.gif",
+        "function": "historyGif"
       }
     ],
     "headers": [
