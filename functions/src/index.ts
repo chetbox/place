@@ -57,7 +57,10 @@ export const imagePng = functions.https.onRequest(async (request, response) => {
       }
     }
     const packedImage = image.pack();
-    packedImage.pipe(response).type("image/png");
+    packedImage
+      .pipe(response)
+      .set("Cache-Control", "public, max-age=86400, s-maxage=86400")
+      .type("image/png");
   } catch (error) {
     response.status(500).send(error);
   }
@@ -84,7 +87,10 @@ export const historyGif = functions
         maxFrameDelay: 500,
         scale: 1,
       });
-      response.type("image/gif").end(Buffer.from(imageData), "binary");
+      response
+        .set("Cache-Control", "public, max-age=86400, s-maxage=604800")
+        .type("image/gif")
+        .end(Buffer.from(imageData), "binary");
     } catch (error) {
       response.status(500).send(error);
     }
