@@ -63,8 +63,9 @@ export const imagePng = functions.https.onRequest(async (request, response) => {
   }
 });
 
-export const historyGif = functions.https.onRequest(
-  async (request, response) => {
+export const historyGif = functions
+  .runWith({ memory: "2GB", timeoutSeconds: 540 })
+  .https.onRequest(async (request, response) => {
     try {
       const [depthSnapshot, historySnapshot] = await Promise.all([
         database.ref("canvas").child(IMAGE_ID).child("depth").once("value"),
@@ -87,5 +88,4 @@ export const historyGif = functions.https.onRequest(
     } catch (error) {
       response.status(500).send(error);
     }
-  }
-);
+  });
