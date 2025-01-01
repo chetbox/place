@@ -37,37 +37,39 @@ function setColor(png: PNG, x: number, y: number, color: PaletteColor) {
   png.data[index + 3] = color.a;
 }
 
-export const imagePng = functions.https.onRequest(async (request, response) => {
-  try {
-    const [depthSnapshot, canvasSnapshot] = await Promise.all([
-      database.ref("canvas").child(IMAGE_ID).child("depth").once("value"),
-      database.ref("canvas").child(IMAGE_ID).child("canvas").once("value"),
-    ]);
-    const depth = depthSnapshot.val() as Canvas["depth"];
-    const canvas = canvasSnapshot.val() as Canvas["canvas"];
+export const imagePng = functions
+  .runWith({ maxInstances: 1 })
+  .https.onRequest(async (request, response) => {
+    try {
+      const [depthSnapshot, canvasSnapshot] = await Promise.all([
+        database.ref("canvas").child(IMAGE_ID).child("depth").once("value"),
+        database.ref("canvas").child(IMAGE_ID).child("canvas").once("value"),
+      ]);
+      const depth = depthSnapshot.val() as Canvas["depth"];
+      const canvas = canvasSnapshot.val() as Canvas["canvas"];
 
-    const size = Math.pow(2, depth);
-    const image = new PNG({ width: size, height: size });
-    for (let y = 0; y < size; y++) {
-      for (let x = 0; x < size; x++) {
-        const colorIndex = colorIndexFrom(depth, canvas, x, y);
-        if (colorIndex !== undefined) {
-          setColor(image, x, y, Palette[colorIndex]);
+      const size = Math.pow(2, depth);
+      const image = new PNG({ width: size, height: size });
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const colorIndex = colorIndexFrom(depth, canvas, x, y);
+          if (colorIndex !== undefined) {
+            setColor(image, x, y, Palette[colorIndex]);
+          }
         }
       }
+      const packedImage = image.pack();
+      packedImage
+        .pipe(response)
+        .set("Cache-Control", "public, max-age=86400, s-maxage=86400")
+        .type("image/png");
+    } catch (error) {
+      response.status(500).send(error);
     }
-    const packedImage = image.pack();
-    packedImage
-      .pipe(response)
-      .set("Cache-Control", "public, max-age=86400, s-maxage=86400")
-      .type("image/png");
-  } catch (error) {
-    response.status(500).send(error);
-  }
-});
+  });
 
 export const historyGif = functions
-  .runWith({ memory: "2GB", timeoutSeconds: 540 })
+  .runWith({ memory: "2GB", timeoutSeconds: 540, maxInstances: 1 })
   .https.onRequest(async (request, response) => {
     try {
       const [depthSnapshot, historySnapshot] = await Promise.all([
