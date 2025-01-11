@@ -1,7 +1,6 @@
 <template>
   <div id="canvas">
-    <p class="instruction">Click a pixel to change its color</p>
-    <table>
+    <table :class="[penColor !== undefined && 'editable', fullscreen && 'fullscreen']">
       <tbody>
           <tr
             v-for="(row, rowIndex) in data.canvas"
@@ -9,7 +8,7 @@
             <td
               v-for="(cellColor, columnIndex) in row"
               :key="columnIndex"
-              @click="setPixelColor(rowIndex, columnIndex, penColor)"
+              @click="penColor !== undefined && setPixelColor(rowIndex, columnIndex, penColor)"
               :class="['color', colorClass(cellColor)]"></td>
           </tr>
       </tbody>
@@ -28,7 +27,10 @@ import firebase from 'firebase/app';
 export default class Canvas extends Vue {
 
   @Prop()
-  public penColor: Color = 0;
+  public penColor: Color | undefined = undefined;
+
+  @Prop()
+  public fullscreen: boolean = false;
 
   public data = {
     canvasDepth: 1,
@@ -36,6 +38,9 @@ export default class Canvas extends Vue {
   };
 
   public colorClass = colorClass;
+
+  private canvasId = 'the-one-and-only';
+  private placeRef = database.ref('canvas').child(this.canvasId);
 
   public setPixelColor(row: number, column: number, color: Color) {
     const xOffsets = row.toString(2).padStart(this.data.canvasDepth, '0');
@@ -77,14 +82,12 @@ export default class Canvas extends Vue {
     this.data.canvas = toGrid<number>(snapshot.val(), emptyGrid(Math.pow(2, this.data.canvasDepth)));
   }
 
-  private canvasId = 'the-one-and-only';
-  private placeRef = database.ref('canvas').child(this.canvasId);
 }
 </script>
 
 <style scoped>
 table {
-  border: 1px solid #ddd;
+  border: none;
   border-collapse: collapse;
   overflow: auto;
   table-layout: fixed;
@@ -92,13 +95,23 @@ table {
   margin: 0;
 }
 table td {
-  height: 10px;
-  width: 10px;
+  height: 12px;
+  width: 12px;
   border-color: transparent;
-  cursor: pointer;
   transition: transform 200ms, box-shadow 200ms;
+  padding: 0;
 }
-table td:hover {
+table.fullscreen td {
+  height: calc(100vw / 128);
+  width: calc(100vw / 128);
+}
+table.editable {
+  border: 1px solid #ddd;
+}
+table.editable td {
+  cursor: pointer;
+}
+table.editable td:hover {
   transform: scale(1.5);
   box-shadow: 0 0 6px #777;
 }
