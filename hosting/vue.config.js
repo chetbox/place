@@ -1,7 +1,6 @@
-
 module.exports = {
   pages: {
     index: 'src/index.ts',
-    view: 'src/view.ts'
+    'view/index': 'src/view.ts'
   }
 }
