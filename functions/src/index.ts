@@ -70,11 +70,11 @@ export const imagePng = functions
 
 export const historyGif = functions
   .runWith({ memory: "2GB", timeoutSeconds: 540, maxInstances: 1 })
-  .https.onRequest(async (request, response) => {
+  .https.onRequest(async (_request, response) => {
     try {
       const [depthSnapshot, historySnapshot] = await Promise.all([
         database.ref("canvas").child(IMAGE_ID).child("depth").once("value"),
-        database.ref("canvas").child(IMAGE_ID).child("history").once("value"),
+        database.ref("canvas").child(IMAGE_ID).child("history").orderByChild("timestamp").limitToLast(200_000).once("value"),
       ]);
       const depth = depthSnapshot.val() as Canvas["depth"];
       const history = Object.values(
