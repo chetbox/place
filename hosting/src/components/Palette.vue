@@ -1,7 +1,5 @@
 <template>
   <div>
-    <p class="instruction">Pick a color</p>
-
     <div id="palette">
       <span
         v-for="color in colors"

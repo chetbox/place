@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <p class="instruction">Pick a color</p>
     <Palette @color="penColor = $event" />
+    <p class="instruction">Click a pixel to change its color</p>
     <Canvas :penColor="penColor" />
     <About />
   </div>
