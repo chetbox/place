@@ -17,25 +17,8 @@ jobs:
       - run: yarn workspaces run build
         env:
           NODE_OPTIONS: --openssl-legacy-provider
-  deploy-main:
-    concurrency: deploy-main
-    if: github.ref == 'refs/heads/main'
-    needs:
-      - build
-    runs-on: ubuntu-22.04
-    timeout-minutes: 40
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 18.x
-      - run: npm install -g yarn@1.22
-      - run: yarn
-      - run: yarn workspaces run build
-        env:
-          NODE_OPTIONS: --openssl-legacy-provider
-      - name: firebase deploy
+      - name: deploy main
+        if: github.ref == 'refs/heads/main'
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
