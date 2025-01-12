@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="/image.png" />
+    <title>Place</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-61569356-4"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-61569356-4");
+    </script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      canvas {
+        width: 100vmin;
+        height: 100vmin;
+        image-rendering: pixelated;
+        background: repeating-linear-gradient(
+          45deg,
+          #333,
+          #333 0.390625%,
+          #444 0.390625%,
+          #444 0.78125%
+        );
+        background-position: 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="128" height="128" />
+
+
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js';
+      import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+      
+      const firebaseConfig = {
+        apiKey: 'AIzaSyB_cFn_nQlA5R9_yK7jz0yOjn4MtC6tDy4',
+        authDomain: 'place-6ebc8.firebaseapp.com',
+        databaseURL: 'https://place-6ebc8.firebaseio.com',
+        projectId: 'place-6ebc8',
+        storageBucket: 'place-6ebc8.appspot.com',
+        messagingSenderId: '467598771690',
+      };
+
+      function toGrid(
+        depth,
+        canvas,
+        flattened = [...Array(Math.pow(2, depth)).keys()].map(() => Array(Math.pow(2, depth))),
+        xOffsets = '',
+        yOffsets = '',
+      ) {
+        ['00', '01', '10', '11'].forEach((key) => {
+          const value = canvas[key];
+          if (typeof value === 'object') {
+            toGrid(depth, value, flattened, xOffsets + key[0], yOffsets + key[1]);
+          } else if (value !== undefined) {
+            // parse binary
+            const x = parseInt(xOffsets + key[0], 2);
+            const y = parseInt(yOffsets + key[1], 2);
+            flattened[x][y] = value;
+          }
+        });
+        return flattened;
+      }
+
+      const COLORS = ['#FFFFFF', '#E4E4E4', '#888888', '#000000', '#FFA7D1', '#E50000', '#E59500', '#A06A42', '#E5D900', '#94E044', '#02BE01', '#00D3DD', '#0083C7', '#0000EA', '#CF6EE4', '#820080'];
+
+      const canvas = document.querySelector("canvas");
+      const ctx = canvas.getContext("2d");
+      ctx.webkitImageSmoothingEnabled = false;
+      ctx.mozImageSmoothingEnabled = false;
+      ctx.imageSmoothingEnabled = false;
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase();
+      const depthRef = ref(db, 'canvas/the-one-and-only/depth');
+      const canvasRef = ref(db, 'canvas/the-one-and-only/canvas');
+      const depth = (await get(depthRef)).val();
+      onValue(canvasRef, (snapshot) => {
+        const canvas = toGrid(depth, snapshot.val());
+        for (let y = 0; y < canvas.length; y++) {
+          const row = canvas[y];
+          for (let x = 0; x < row.length; x++) {
+            const value = row[x];
+            if (value !== undefined) {
+              ctx.fillStyle = COLORS[value];
+              ctx.fillRect(x, y, 1, 1);
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
