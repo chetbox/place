@@ -74,7 +74,7 @@ export const historyGif = functions
     try {
       const [depthSnapshot, historySnapshot] = await Promise.all([
         database.ref("canvas").child(IMAGE_ID).child("depth").once("value"),
-        database.ref("canvas").child(IMAGE_ID).child("history").orderByChild("timestamp").limitToLast(200_000).once("value"),
+        database.ref("canvas").child(IMAGE_ID).child("history").orderByChild("timestamp").limitToLast(100_000).once("value"),
       ]);
       const depth = depthSnapshot.val() as Canvas["depth"];
       const history = Object.values(
