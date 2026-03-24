@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions/v1";
+import { onRequest } from "firebase-functions/v2/https";
 import { PNG } from "pngjs";
 import { Canvas, Square } from "../../database/.types";
 import { Color as PaletteColor, Palette } from "./palette";
@@ -37,9 +37,9 @@ function setColor(png: PNG, x: number, y: number, color: PaletteColor) {
   png.data[index + 3] = color.a;
 }
 
-export const imagePng = functions
-  .runWith({ maxInstances: 1 })
-  .https.onRequest(async (request, response) => {
+export const imagePng = onRequest(
+  { maxInstances: 1, concurrency: 1 },
+  async (_request, response) => {
     try {
       const [depthSnapshot, canvasSnapshot] = await Promise.all([
         database.ref("canvas").child(IMAGE_ID).child("depth").once("value"),
@@ -66,15 +66,22 @@ export const imagePng = functions
     } catch (error) {
       response.status(500).send(error);
     }
-  });
+  }
+);
 
-export const historyGif = functions
-  .runWith({ memory: "2GB", timeoutSeconds: 540, maxInstances: 1 })
-  .https.onRequest(async (_request, response) => {
+export const historyGif = onRequest(
+  { memory: "4GiB", timeoutSeconds: 1080, maxInstances: 1, concurrency: 1 },
+  async (_request, response) => {
     try {
       const [depthSnapshot, historySnapshot] = await Promise.all([
         database.ref("canvas").child(IMAGE_ID).child("depth").once("value"),
-        database.ref("canvas").child(IMAGE_ID).child("history").orderByChild("timestamp").limitToLast(100_000).once("value"),
+        database
+          .ref("canvas")
+          .child(IMAGE_ID)
+          .child("history")
+          .orderByChild("timestamp")
+          .limitToLast(100_000)
+          .once("value"),
       ]);
       const depth = depthSnapshot.val() as Canvas["depth"];
       const history = Object.values(
@@ -96,4 +103,5 @@ export const historyGif = functions
     } catch (error) {
       response.status(500).send(error);
     }
-  });
+  }
+);
