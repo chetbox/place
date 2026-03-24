@@ -14,8 +14,8 @@
   "main": "dist/functions/src/index.js",
   "dependencies": {
     "canvas": "^2.11.2",
-    "firebase-admin": "^8.13.0",
-    "firebase-functions": "^3.21.0",
+    "firebase-admin": "^13.7.0",
+    "firebase-functions": "^7.2.2",
     "modern-gif": "^2.0.3",
     "pngjs": "^3.3.3"
   },
@@ -23,6 +23,6 @@
     "@firebase/app-types": "^0.3.2",
     "@types/pngjs": "^3.3.2",
     "tslint": "~5.8.0",
-    "typescript": "4"
+    "typescript": "5"
   }
 }
