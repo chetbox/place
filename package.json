@@ -4,9 +4,14 @@
   "author": "Chetan Padia <chetbox@users.noreply.github.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": ["database", "functions", "hosting"],
+  "workspaces": [
+    "database",
+    "functions",
+    "hosting"
+  ],
   "main": "./functions/dist/functions/src/index.js",
   "engines": {
-    "node": "18"
-  }
+    "node": "20"
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

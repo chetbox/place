@@ -1,4 +1,4 @@
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
 import { PNG } from "pngjs";
 import { Canvas, Square } from "../../database/.types";
 import { Color as PaletteColor, Palette } from "./palette";

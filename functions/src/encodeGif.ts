@@ -1,7 +1,7 @@
 import { ColorHistoryItem } from "../../database/.types";
 import { createCanvas } from "canvas";
 import { Palette } from "./palette";
-import { encode as encodeGif } from "modern-gif";
+import { encode as encodeGif, type UnencodedFrame } from "modern-gif";
 
 export async function encodeHistoryAsGif(
   width: number,
@@ -28,7 +28,7 @@ export async function encodeHistoryAsGif(
   const canvas = createCanvas(width * options.scale, height * options.scale);
   const ctx = canvas.getContext("2d");
 
-  const frames: { delay: number; data: Uint8ClampedArray }[] = [];
+  const frames: Array<UnencodedFrame> = [];
 
   for (let i = 0; i < history.length; i++) {
     const { x, y, value, timestamp } = history[i];
@@ -47,7 +47,7 @@ export async function encodeHistoryAsGif(
       0,
       width * options.scale,
       height * options.scale
-    ).data;
+    ).data.buffer as ArrayBuffer;
 
     let delay =
       i < history.length - 1
