@@ -24,11 +24,11 @@
       },
       {
         "source": "/image.png",
-        "function": "imagePng"
+        "function": "imagePngV2"
       },
       {
         "source": "/history.gif",
-        "function": "historyGif"
+        "function": "historyGifV2"
       }
     ],
     "headers": [
