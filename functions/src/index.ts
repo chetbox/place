@@ -37,7 +37,7 @@ function setColor(png: PNG, x: number, y: number, color: PaletteColor) {
   png.data[index + 3] = color.a;
 }
 
-export const imagePng = onRequest(
+export const imagePngV2 = onRequest(
   { maxInstances: 1, concurrency: 1 },
   async (_request, response) => {
     try {
@@ -69,7 +69,7 @@ export const imagePng = onRequest(
   }
 );
 
-export const historyGif = onRequest(
+export const historyGifV2 = onRequest(
   { memory: "4GiB", timeoutSeconds: 1080, maxInstances: 1, concurrency: 1 },
   async (_request, response) => {
     try {
