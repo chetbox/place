@@ -4,6 +4,9 @@
   "author": "Chetan Padia <chetbox@users.noreply.github.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "build": "yarn workspaces run build"
+  },
   "workspaces": [
     "database",
     "functions",

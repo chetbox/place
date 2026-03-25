@@ -13,7 +13,7 @@ jobs:
           node-version: 20.x
       - run: npm install -g yarn@1.22
       - run: yarn
-      - run: yarn workspaces run build
+      - run: yarn build
         env:
           NODE_OPTIONS: --openssl-legacy-provider
       - name: deploy main
