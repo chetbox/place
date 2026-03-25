@@ -2,3 +2,4 @@
 node_modules/
 .rules.json
 .types.ts
+yarn.lock
